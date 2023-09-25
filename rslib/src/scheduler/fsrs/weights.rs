@@ -21,11 +21,11 @@ pub(crate) type Weights = Vec<f32>;
 
 impl Collection {
     pub fn compute_weights(&mut self, search: &str) -> Result<ComputeFsrsWeightsResponse> {
+        let mut anki_progress = self.new_progress_handler::<ComputeWeightsProgress>();
         let timing = self.timing_today()?;
         let revlogs = self.revlog_for_srs(search)?;
         let items = fsrs_items_for_training(revlogs, timing.next_day_at);
         let fsrs_items = items.len() as u32;
-        let mut anki_progress = self.new_progress_handler::<ComputeWeightsProgress>();
         anki_progress.update(false, |p| p.fsrs_items = fsrs_items)?;
         // adapt the progress handler to our built-in progress handling
         let progress = ProgressState::new_shared();
@@ -130,7 +130,7 @@ pub(crate) fn fsrs_items_for_memory_state(
 /// `[1,2,3]`, we create FSRSItems corresponding to `[1,2]` and `[1,2,3]`
 /// in training, and `[1]`, [1,2]` and `[1,2,3]` when calculating memory
 /// state.
-fn single_card_revlog_to_items(
+pub(crate) fn single_card_revlog_to_items(
     mut entries: Vec<RevlogEntry>,
     next_day_at: TimestampSecs,
     training: bool,
@@ -153,7 +153,7 @@ fn single_card_revlog_to_items(
         if idx > 0 {
             entries.drain(..idx);
         }
-    } else {
+    } else if training {
         // we ignore cards that don't have any learning steps
         return None;
     }
@@ -355,6 +355,23 @@ mod tests {
                 true,
             ),
             fsrs_items!([review(0), review(4)])
+        );
+    }
+
+    #[test]
+    fn bypassed_learning_is_handled() {
+        assert_eq!(
+            convert(
+                &[
+                    RevlogEntry {
+                        ease_factor: 2500,
+                        ..revlog(RevlogReviewKind::Manual, 7)
+                    },
+                    revlog(RevlogReviewKind::Review, 6),
+                ],
+                false,
+            ),
+            fsrs_items!([review(0)])
         );
     }
 

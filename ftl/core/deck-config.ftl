@@ -149,6 +149,7 @@ deck-config-new-gather-priority-tooltip-2 =
     
     `Random cards`: gathers cards completely randomly.
 deck-config-new-gather-priority-deck = Deck
+deck-config-new-gather-priority-deck-then-random-notes = Deck then random notes
 deck-config-new-gather-priority-position-lowest-first = Ascending position
 deck-config-new-gather-priority-position-highest-first = Descending position
 deck-config-new-gather-priority-random-notes = Random notes
@@ -314,11 +315,11 @@ deck-config-which-deck = Which deck would you like to display options for?
 deck-config-updating-cards = Updating cards: { $current_cards_count }/{ $total_cards_count }...
 deck-config-invalid-weights = Weights must be either left blank to use the defaults, or must be 17 comma-separated numbers.
 deck-config-not-enough-history = Insufficient review history to perform this operation.
-deck-config-limited-history =
+deck-config-must-have-1000-reviews =
     { $count ->
         [one] Only { $count } review was found.
         *[other] Only { $count } reviews were found.
-    } The custom weights are likely to be inaccurate, and using the defaults instead is recommended.
+    } You must have at least 1000 reviews to generate custom weights.
 deck-config-compute-weights-search = Search; leave blank for all cards using this preset
 # Numbers that control how aggressively the FSRS algorithm schedules cards
 deck-config-weights = Model weights
@@ -327,12 +328,13 @@ deck-config-compute-optimal-retention = Compute optimal retention
 deck-config-compute-button = Compute
 deck-config-analyze-button = Analyze
 deck-config-desired-retention = Desired retention
-deck-config-smaller-is-better = Smaller numbers indicate better memory estimates.
-deck-config-steps-too-large-for-fsrs = When FSRS is enabled, interday (re)learning steps are not recommended.
+deck-config-smaller-is-better = Smaller numbers indicate a better fit to your review history.
+deck-config-steps-too-large-for-fsrs = When FSRS is enabled, learning steps over 1 day are not recommended.
 deck-config-get-params = Get Params
 deck-config-fsrs-on-all-clients =
     Please ensure all of your Anki clients are Anki(Mobile) 23.10+ or AnkiDroid 2.17+. FSRS will
     not work correctly if one of your clients is older.
+deck-config-your-optimal-retention = Your optimal retention is { $num }.
 
 ## NO NEED TO TRANSLATE. This text is no longer used by Anki, and will be removed in the future.
 
